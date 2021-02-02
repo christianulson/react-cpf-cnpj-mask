@@ -1,14 +1,15 @@
 import React from "react";
 import PropTypes from "prop-types";
 
-const CpfCnpj = (props) => {
+const CpfCnpjCep = (props) => {
   const TYPES = {
     CPF: "999.999.999-999",
     CNPJ: "99.999.999/9999-99",
+    CEP: "99.999-999",
   };
-  const MAX_LENGTH = clear(TYPES.CNPJ).length;
+  const { onChange, type, maskType } = props;
 
-  const { onChange, type } = props;
+  const MAX_LENGTH = clear(maskType ? TYPES[maskType] : TYPES.CNPJ).length;
 
   let value = clear(props.value);
 
@@ -32,7 +33,9 @@ const CpfCnpj = (props) => {
   }
 
   function getMask(value) {
-    return value.length > 11 ? "CNPJ" : "CPF";
+    return maskType
+    ? maskType
+    : (value.length > 11 ? "CNPJ" : "CPF");
   }
 
   function applyMask(value, mask) {
@@ -58,15 +61,15 @@ const CpfCnpj = (props) => {
   );
 };
 
-CpfCnpj.propTypes = {
+CpfCnpjCep.propTypes = {
   value: PropTypes.string,
   onChange: PropTypes.func,
 };
 
-CpfCnpj.defaultProps = {
+CpfCnpjCep.defaultProps = {
   type: "tel",
   value: "",
   onChange: () => {},
 };
 
-export default CpfCnpj;
+export default CpfCnpjCep;
